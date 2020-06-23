@@ -43,9 +43,18 @@ $("button").on("click", function () {
       method: "GET",
     }).then(function (uvindex) {
       console.log(uvindex);
-      var uvIndex = uvindex.value;
-      var uvElem = $("<p>").text("UV Index: " + uvIndex);
+      var uvIndex = parseInt(uvindex.value);
+      var uvElem = $("<p>").html("UV Index:<span>" + uvIndex + "</span>");
+      //uvElem.text("UV Index:<span>" + uvIndex + "</span>");
       $("#currentWeather").append(uvElem);
+
+      if (uvIndex >= 10) {
+        $("span").css("background-color", "red");
+      } else if (uvIndex <= 2) {
+        $("span").css("background-color", "green");
+      } else if (uvIndex > 2 && uvIndex < 10) {
+        $("span").css("background-color", "yellow");
+      }
     });
   });
 
@@ -61,24 +70,34 @@ $("button").on("click", function () {
     var forecasts = forecast.list;
 
     for (var i = 0; i < forecasts.length; i++) {
-      var forecastDate = forecasts[i].dt_txt;
-      var forecastCondition = forecasts[i].weather[0].main;
+      var forecastDate = $("<p>").text(forecasts[i].dt_txt);
+      var forecastCondition = $("<p>").text(forecasts[i].weather[0].main);
       var forecastTemp = forecasts[i].main.temp;
-      var fForecastConvert = ((forecastTemp - 273.15) * 1.8 + 32).toFixed(2);
-      var forecastHumidity = forecasts[i].main.humidity;
+      var fForecastConvert = $("<p>").text(
+        ((forecastTemp - 273.15) * 1.8 + 32).toFixed(2)
+      );
+      var forecastHumidity = $("<p>").text(forecasts[i].main.humidity);
 
       //displays each day separately
       if ([i] % 8 === 0) {
-        console.log(forecastDate);
-        console.log(forecastCondition);
-        console.log(fForecastConvert);
-        console.log(forecastHumidity);
+        // console.log(forecastDate);
+        // console.log(forecastCondition);
+        // console.log(fForecastConvert);
+        // console.log(forecastHumidity);
+
+        var newDiv = $("<div>").append(
+          forecastDate,
+          forecastCondition,
+          fForecastConvert,
+          forecastHumidity
+        );
+        $("#5dayForecast").append(newDiv);
       }
 
       //console.log(fForecastConvert);
 
-      var newDiv = $("<div>").append(forecastDate);
-      $("#5dayForecast").append(newDiv);
+      // var newDiv = $("<div>").append(forecastDate);
+      // $("#5dayForecast").append(newDiv);
     } // closes for loop
   });
 });

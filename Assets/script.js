@@ -22,11 +22,11 @@ $("button").on("click", function () {
       localStorage.setItem(i, $(this).text());
     });
 
+    //current city weather
     var name = response.name;
     var nameElem = $("<h2>").text(name);
 
     var temperature = response.main.temp;
-
     var tempElem = $("<p>").text("Temperature: " + temperature);
 
     var humidity = response.main.humidity;
@@ -38,6 +38,7 @@ $("button").on("click", function () {
     $("#currentWeather").empty();
     $("#currentWeather").append(nameElem, tempElem, humidityElem, windElem);
 
+    //ends currentCIty funtion
     //get lat and long to find UV index
     var longitude = "&lon=" + response.coord.lon;
     var latitude = "&lat=" + response.coord.lat;
@@ -104,3 +105,41 @@ $("button").on("click", function () {
     } // closes for loop
   });
 });
+
+var storage = [];
+console.log(localStorage);
+for (var j = 0; j <= localStorage.length; j++) {
+  storage.push(localStorage.getItem(j));
+}
+console.log(storage);
+var storageLength = storage.length - 1;
+console.log(storageLength);
+
+//$("#currentWeather").load(function () {
+var apiKey = "&appid=3c85c1039b089f52f3c466c42a12368f";
+var searchCity = storage[storageLength];
+var queryURL =
+  "https://api.openweathermap.org/data/2.5/weather?&units=imperial&q=" +
+  searchCity +
+  apiKey;
+
+$.ajax({
+  url: queryURL,
+  method: "GET",
+}).then(function (response) {
+  var name = response.name;
+  var nameElem = $("<h2>").text(name);
+
+  var temperature = response.main.temp;
+  var tempElem = $("<p>").text("Temperature: " + temperature);
+
+  var humidity = response.main.humidity;
+  var humidityElem = $("<p>").text("Humidity: " + humidity);
+
+  var windSpeed = response.wind.speed;
+  var windElem = $("<p>").text("Wind Speed: " + windSpeed);
+
+  $("#currentWeather").empty();
+  $("#currentWeather").append(nameElem, tempElem, humidityElem, windElem);
+});
+//});

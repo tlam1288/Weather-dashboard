@@ -2,23 +2,32 @@ $("button").on("click", function () {
   var apiKey = "&appid=3c85c1039b089f52f3c466c42a12368f";
   var searchCity = $("#searchCity").val();
   var queryURL =
-    "https://api.openweathermap.org/data/2.5/weather?q=" + searchCity + apiKey;
+    "https://api.openweathermap.org/data/2.5/weather?&units=imperial&q=" +
+    searchCity +
+    apiKey;
 
   $.ajax({
     url: queryURL,
     method: "GET",
   }).then(function (response) {
-    console.log(response);
-
-    var newSearchP = $("<p>").text(searchCity);
+    var newSearchP = $("<div>")
+      .attr("class", "card p-2 searchNumber")
+      .text(searchCity);
     $("#searchForm").append(newSearchP);
+
+    //adds id and key for each new search term and saves to local storage
+    $(".searchNumber").each(function (i) {
+      $(this).attr("id", i);
+      i++;
+      localStorage.setItem(i, $(this).text());
+    });
 
     var name = response.name;
     var nameElem = $("<h2>").text(name);
 
     var temperature = response.main.temp;
-    var fConvert = ((temperature - 273.15) * 1.8 + 32).toFixed(2);
-    var tempElem = $("<p>").text("Temperature: " + fConvert);
+
+    var tempElem = $("<p>").text("Temperature: " + temperature);
 
     var humidity = response.main.humidity;
     var humidityElem = $("<p>").text("Humidity: " + humidity);
@@ -33,7 +42,7 @@ $("button").on("click", function () {
     var longitude = "&lon=" + response.coord.lon;
     var latitude = "&lat=" + response.coord.lat;
     var uvURL =
-      "http://api.openweathermap.org/data/2.5/uvi?" +
+      "http://api.openweathermap.org/data/2.5/uvi?&units=imperial" +
       latitude +
       longitude +
       apiKey;
@@ -42,10 +51,9 @@ $("button").on("click", function () {
       url: uvURL,
       method: "GET",
     }).then(function (uvindex) {
-      console.log(uvindex);
       var uvIndex = parseInt(uvindex.value);
-      var uvElem = $("<p>").html("UV Index:<span>" + uvIndex + "</span>");
-      //uvElem.text("UV Index:<span>" + uvIndex + "</span>");
+      var uvElem = $("<p>").html("UV Index:  <span>" + uvIndex + "</span>");
+
       $("#currentWeather").append(uvElem);
 
       if (uvIndex >= 10) {
@@ -60,44 +68,39 @@ $("button").on("click", function () {
 
   //5 day forecast
   var forecastURL =
-    "https://api.openweathermap.org/data/2.5/forecast?q=" + searchCity + apiKey;
+    "https://api.openweathermap.org/data/2.5/forecast?&units=imperial&q=" +
+    searchCity +
+    apiKey;
 
   $.ajax({
     url: forecastURL,
     method: "GET",
   }).then(function (forecast) {
-    console.log(forecast);
     var forecasts = forecast.list;
 
+    $("#5dayForecast").empty();
     for (var i = 0; i < forecasts.length; i++) {
-      var forecastDate = $("<p>").text(forecasts[i].dt_txt);
-      var forecastCondition = $("<p>").text(forecasts[i].weather[0].main);
-      var forecastTemp = forecasts[i].main.temp;
-      var fForecastConvert = $("<p>").text(
-        ((forecastTemp - 273.15) * 1.8 + 32).toFixed(2)
+      var forecastDate = $("<p>").text(
+        forecasts[i].dt_txt.replace("00:00:00", " ")
       );
-      var forecastHumidity = $("<p>").text(forecasts[i].main.humidity);
+      var forecastCondition = $("<p>").text(forecasts[i].weather[0].main);
+      var forecastTemp = $("<p>").text("Temp: " + forecasts[i].main.temp);
+      var forecastHumidity = $("<p>").text(
+        "Humidity: " + forecasts[i].main.humidity
+      );
 
       //displays each day separately
       if ([i] % 8 === 0) {
-        // console.log(forecastDate);
-        // console.log(forecastCondition);
-        // console.log(fForecastConvert);
-        // console.log(forecastHumidity);
-
-        var newDiv = $("<div>").append(
+        var newDiv = $("<div>").attr("class", "col card mr-3 forecast");
+        newDiv.append(
           forecastDate,
           forecastCondition,
-          fForecastConvert,
+          forecastTemp,
           forecastHumidity
         );
+
         $("#5dayForecast").append(newDiv);
       }
-
-      //console.log(fForecastConvert);
-
-      // var newDiv = $("<div>").append(forecastDate);
-      // $("#5dayForecast").append(newDiv);
     } // closes for loop
   });
 });

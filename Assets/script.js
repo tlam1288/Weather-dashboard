@@ -1,5 +1,4 @@
 var storage = [];
-var searchCity = $("#searchCity").val();
 
 function getWeather() {
   var apiKey = "&appid=3c85c1039b089f52f3c466c42a12368f";
@@ -17,13 +16,6 @@ function getWeather() {
       .attr("class", "card p-2 searchNumber")
       .text(searchCity);
     $("#searchForm").append(newSearchP);
-
-    //adds id and key for each new search term and saves to local storage
-    // $(".searchNumber").each(function (i) {
-    //   $(this).attr("id", i);
-    //   i++;
-    //   localStorage.setItem(i, $(this).text());
-    // });
 
     //current city weather
     var name = response.name;
@@ -105,21 +97,28 @@ function getWeather() {
 
         $("#5dayForecast").append(newDiv);
       }
-    } // closes for loop
-  }); // closes ajax call
+    }
+  });
 
   //saves search in local storage
   storage.push(searchCity);
   localStorage.setItem("city", JSON.stringify(storage));
+  JSON.parse(localStorage.getItem("city"));
 }
 
 //rendering from local storage
 var apiKey = "&appid=3c85c1039b089f52f3c466c42a12368f";
 var savedSearch = JSON.parse(localStorage.getItem("city"));
+if (savedSearch === null) {
+  savedSearch = " ";
+} else {
+  savedSearch = JSON.parse(localStorage.getItem("city"));
+}
+var renderSavedSearch = savedSearch[savedSearch.length - 1];
 
 var queryURL2 =
   "https://api.openweathermap.org/data/2.5/weather?&units=imperial&q=" +
-  savedSearch +
+  renderSavedSearch +
   apiKey;
 
 $.ajax({

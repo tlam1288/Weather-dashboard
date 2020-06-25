@@ -200,8 +200,8 @@ $.ajax({
 
         $("#5dayForecast").append(newDiv);
       }
-    } // closes for loop
-  }); // closes ajax call
+    }
+  });
 });
 
 //search for current weather

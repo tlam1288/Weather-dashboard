@@ -38,7 +38,7 @@ function getWeather() {
     var longitude = "&lon=" + response.coord.lon;
     var latitude = "&lat=" + response.coord.lat;
     var uvURL =
-      "http://api.openweathermap.org/data/2.5/uvi?&units=imperial" +
+      "https://api.openweathermap.org/data/2.5/uvi?&units=imperial" +
       latitude +
       longitude +
       apiKey;
@@ -143,7 +143,7 @@ $.ajax({
   var longitude = "&lon=" + response.coord.lon;
   var latitude = "&lat=" + response.coord.lat;
   var uvURL =
-    "http://api.openweathermap.org/data/2.5/uvi?&units=imperial" +
+    "https://api.openweathermap.org/data/2.5/uvi?&units=imperial" +
     latitude +
     longitude +
     apiKey;

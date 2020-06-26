@@ -17,4 +17,4 @@ Every new city search will be saved onto their local storage and the most recent
 
 https://tlam1288.github.io/Weather-dashboard/
 
-![Weather Dashboard](Assets/WeatherDashboard.PNG);
+![Weather Dashboard](Assets/WeatherDashboard.png);

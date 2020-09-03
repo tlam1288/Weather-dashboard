@@ -11,7 +11,7 @@ function getWeather() {
   $.ajax({
     url: queryURL,
     method: "GET",
-  }).then(function (response) {
+  }).then((response) => {
     let newSearchP = $("<div>")
       .attr("class", "card p-2 searchNumber")
       .text(searchCity);
@@ -46,7 +46,7 @@ function getWeather() {
     $.ajax({
       url: uvURL,
       method: "GET",
-    }).then(function (uvindex) {
+    }).then((uvindex) => {
       let uvIndex = parseInt(uvindex.value);
       let uvElem = $("<p>").html("UV Index:  <span>" + uvIndex + "</span>");
 
@@ -71,7 +71,7 @@ function getWeather() {
   $.ajax({
     url: forecastURL,
     method: "GET",
-  }).then(function (forecast) {
+  }).then((forecast) => {
     let forecasts = forecast.list;
 
     $("#5dayForecast").empty();
@@ -126,7 +126,7 @@ let queryURL2 =
 $.ajax({
   url: queryURL2,
   method: "GET",
-}).then(function (response) {
+}).then((response) => {
   let name = response.name;
   let nameElem = $("<h2>").text(name);
 
@@ -153,7 +153,7 @@ $.ajax({
   $.ajax({
     url: uvURL,
     method: "GET",
-  }).then(function (uvindex) {
+  }).then((uvindex) => {
     let uvIndex = parseInt(uvindex.value);
     let uvElem = $("<p>").html("UV Index:  <span>" + uvIndex + "</span>");
 
@@ -176,7 +176,7 @@ $.ajax({
   $.ajax({
     url: forecastURL,
     method: "GET",
-  }).then(function (forecast) {
+  }).then((forecast) => {
     let forecasts = forecast.list;
 
     $("#5dayForecast").empty();

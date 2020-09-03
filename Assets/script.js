@@ -22,13 +22,13 @@ function getWeather() {
     var nameElem = $("<h2>").text(name);
 
     var temperature = response.main.temp;
-    var tempElem = $("<p>").text("Temperature: " + temperature);
+    var tempElem = $("<p>").text("Temperature: " + temperature + "F");
 
     var humidity = response.main.humidity;
-    var humidityElem = $("<p>").text("Humidity: " + humidity);
+    var humidityElem = $("<p>").text("Humidity: " + humidity + "%");
 
     var windSpeed = response.wind.speed;
-    var windElem = $("<p>").text("Wind Speed: " + windSpeed);
+    var windElem = $("<p>").text("Wind Speed: " + windSpeed + "mph");
 
     $("#currentWeather").empty();
     $("#currentWeather").append(nameElem, tempElem, humidityElem, windElem);
@@ -80,9 +80,11 @@ function getWeather() {
         forecasts[i].dt_txt.replace("00:00:00", " ")
       );
       var forecastCondition = $("<p>").text(forecasts[i].weather[0].main);
-      var forecastTemp = $("<p>").text("Temp: " + forecasts[i].main.temp);
+      var forecastTemp = $("<p>").text(
+        "Temp: " + forecasts[i].main.temp + " F"
+      );
       var forecastHumidity = $("<p>").text(
-        "Humidity: " + forecasts[i].main.humidity
+        "Humidity: " + forecasts[i].main.humidity + "%"
       );
 
       //displays each day separately
